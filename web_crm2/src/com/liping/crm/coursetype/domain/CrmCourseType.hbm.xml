@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+    <hibernate-mapping package="com.liping.crm.coursetype.domain">
+		<class name="CrmCourseType" table="crm_courseType">
+			<id name="courseTypeId" column="courseTypeId">
+				<generator class="uuid"></generator>
+			</id>
+			<property name="courseCost"></property>
+			<property name="total"></property>
+			<property name="courseName"></property>
+			<property name="remark"></property>
+			<set name="classSet">
+				<key column="courseTypeId"></key>
+				<one-to-many class="com.liping.crm.classes.domain.CrmClasses"/>
+			</set>
+		</class>    
+    </hibernate-mapping>
+    

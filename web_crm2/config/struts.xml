@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+	
+	<struts>
+	<constant name="struts.devMode" value="true"></constant>
+	<constant name="struts.ui.theme" value="simple"></constant>
+		<package name="common" namespace="/" extends="struts-default">
+			<interceptors>
+				<!-- 注册拦截器 -->
+				<interceptor name="loginIntercepter" class="com.liping.crm.web.intercepter.LoginIntercepter"></interceptor>
+				<interceptor-stack name="loginStack">
+					<interceptor-ref name="defaultStack"></interceptor-ref>
+					<!-- 自定义拦截器设置某些方法不拦截 -->
+					<interceptor-ref name="loginIntercepter">
+						<param name="excludeMethods">login</param>
+					</interceptor-ref>
+				</interceptor-stack>
+			</interceptors>
+			<!-- 声明默认拦截器栈 -->
+			<default-interceptor-ref name="loginStack"></default-interceptor-ref>
+			<global-results>
+				<result name="login">/WEB-INF/pages/login.jsp</result>
+			</global-results>
+			<action name="uiAction_*_*">
+				<result>/WEB-INF/pages/{1}/{2}.jsp</result>
+			</action>
+		</package>
+		<!-- 引入其他struts文件 -->
+		<include file="struts/struts-staff.xml"></include>
+	
+	</struts>
