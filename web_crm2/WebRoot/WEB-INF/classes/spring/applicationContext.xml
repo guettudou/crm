@@ -54,5 +54,7 @@
 	</aop:config>	
 	
 	<import resource="applicationContext-staff.xml"/>
+	<import resource="applicationContext-department.xml"/>
+	<import resource="applicationContext-post.xml"/>
 	
 </beans>

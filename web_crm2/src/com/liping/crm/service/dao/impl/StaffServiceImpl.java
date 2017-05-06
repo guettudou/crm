@@ -24,6 +24,17 @@ public class StaffServiceImpl implements StaffService {
 		
 		return staffDao.findAll();
 	}
+
+	public CrmStaff findById(CrmStaff staff) {
+		
+		return staffDao.findById(staff.getStaffId());
+	}
+
+	public void updateStaff(CrmStaff staff) {
+
+		
+		
+	}
 	
 	
 

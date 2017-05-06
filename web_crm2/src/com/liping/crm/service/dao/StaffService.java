@@ -20,6 +20,20 @@ public interface StaffService {
 	 */
 	public List<CrmStaff> findAllStaff();
 	
+	/**
+	 * 查找员工
+	 * @param staff
+	 * @return
+	 */
+	public CrmStaff findById(CrmStaff staff);
+
+	
+	/**
+	 * 更新员工
+	 * @param staff
+	 */
+	public void updateStaff(CrmStaff staff);
+	
 	
 	
 }

@@ -29,5 +29,6 @@
 		</package>
 		<!-- 引入其他struts文件 -->
 		<include file="struts/struts-staff.xml"></include>
+		<include file="struts/struts-post.xml"></include>
 	
 	</struts>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@taglib uri="/struts-tags"  prefix="s"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -33,55 +34,113 @@
   </tr>
 </table>
 
-<form action="/crm2/staff/staffAction_edit.action" method="post">
-	
-	<input type="hidden" name="staffId" value="2c9091c14c78e58b014c78e7ecd90007"/>
-	
+<s:form action="staffAction_edit" namespace="/">
 	<table width="88%" border="0" class="emp_table" style="width:80%;">
 	 <tr>
 	    <td>登录名：</td>
-	    <td><input type="text" name="loginName" value="tom" /> </td>
+	    <td><s:textfield name="loginName"></s:textfield></td>
 	    <td>密码：</td>
-	    <td><input type="password" name="loginPwd" value="81dc9bdb52d04dc20036dbd8313ed055" /> </td>
+	    <td><s:password name="loginPwd" showPassword="true"></s:password></td>
 	  </tr>
 	 <tr>
 	    <td>姓名：</td>
-	    <td><input type="text" name="staffName" value="汤姆" /> </td>
+	    <td><s:textfield name="staffName"></s:textfield></td>
 	    <td>性别：</td>
 	    <td>
-	    	<input type="radio" name="gender" checked="checked" value="男"/>男
-	    	<input type="radio" name="gender" value="女"/>女
+	    	<s:radio list="{'男','女'}" name="gender"></s:radio>
 	    </td>
 	  </tr>
 	 <tr>
 	    <td width="10%">所属部门：</td>
 	    <td width="20%">
-	    	<select name="crmPost.crmDepartment.depId"  onchange="changePost(this)">
-			    <option value="">----请--选--择----</option>
-			    <option value="2c9091c14c78e58b014c78e67de10001" selected="selected">java学院</option>
-			    <option value="2c9091c14c78e58b014c78e68ded0002">咨询部</option>
-			</select>
-
+	    	<s:select list="allDepartment" name="post.department.depId"
+				    	listKey="depId" listValue="depName"
+				    	headerKey=""  headerValue="----请--选--择----"
+						onchange="showPost(this)"				    	
+				    	>
+	    	</s:select>
 	    </td>
 	    <td width="8%">职务：</td>
 	    <td width="62%">
-	    	<select name="crmPost.postId" id="postSelectId">
-			    <option value="">----请--选--择----</option>
-			    <option value="2c9091c14c78e58b014c78e6b34a0003">总监</option>
-			    <option value="2c9091c14c78e58b014c78e6d4510004" selected="selected">讲师</option>
-			</select>
+	    	<s:select list="post.department.postSet" name="post.postId"
+	    		listKey="postId" listValue="postName"
+	    		headerKey=""  headerValue="----请--选--择----"
+	    		id="selectElement"
+	    	>
+	    	
+	    	</s:select>
 	    </td>
 	  </tr>
 	  <tr>
 	    <td width="10%">入职时间：</td>
 	    <td width="20%">
-	    	<input type="text" name="onDutyDate" value="2014-04-24" readonly="readonly" onfocus="c.showMoreDay=true; c.show(this);"/>
+	    	<s:date name="onDutyDate" format="yyyy-MM-dd" var="myDate"/>
+	    	<s:textfield name="onDutyDate" readonly="true" value="%{#myDate}" onfocus="c.showMoreDay=true; c.show(this);"></s:textfield>
 	    </td>
 	    <td width="8%"></td>
 	    <td width="62%"></td>
 	  </tr>
 	</table>
-</form>
-
+</s:form>
+	<script type="text/javascript">
+		
+		function showPost(obj){
+		
+			//获得选中部门
+			var depId=obj.value;
+			//获得引擎
+			var xmlHttp;
+ 			//
+			 try
+			    { // Firefox, Opera 8.0+, Safari
+			    xmlHttp=new XMLHttpRequest();
+			    }catch (e) { // Internet Explorer
+			   try
+			      {
+			      xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+			      } catch (e) {
+	
+	     	 try
+	         {
+	        	 xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+	         }
+	    	  catch (e)
+	         {
+	         alert("您的浏览器不支持AJAX！");
+	         return false;
+	         }
+	      }
+	    }
+		
+		//设置回调函数
+	    xmlHttp.onreadystatechange=function()
+	      {
+	      if(xmlHttp.readyState==4&&xmlHttp.status==200)
+	        {
+	         //获得数据并展示
+	         var textData=xmlHttp.responseText;
+	         //转换成json数据
+	         var jsonData=eval("("+textData+")");
+	         //获得select对象
+	         var selectElement=document.getElementById("selectElement");
+	         //初始化select
+	         selectElement.innerHTML="<option value=''>----请--选--择----</option>";
+	         for(var i=0;i<jsonData.length;i++){
+	         	var postObj=jsonData[i];
+	         	selectElement.innerHTML+="<option value='"+postObj.postId+"'>"+postObj.postName+"</option>";
+	         
+	         }
+	         
+	         
+	        }
+	      };
+	      //创建连接
+	    var url="{pageContext.request.contextPath}/postAction_findAllByDepartment?department.depId="+depId
+	    xmlHttp.open("GET",url);
+	    //发送请求
+	    xmlHttp.send(null);
+	    
+		}
+	</script>
 </body>
 </html>

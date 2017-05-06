@@ -19,5 +19,13 @@ public interface StaffDao {
 	 */
 	public List<CrmStaff> findAll();
 	
+	/**
+	 * 通过ID查找员工
+	 * @param staffId
+	 * @return
+	 */
+	public CrmStaff findById(String staffId);
+	
+	
 
 }

@@ -2,6 +2,8 @@ package com.liping.crm.staff.web.action;
 
 import java.util.List;
 
+import com.liping.crm.department.domain.CrmDepartment;
+import com.liping.crm.service.dao.DepartmentService;
 import com.liping.crm.service.dao.StaffService;
 import com.liping.crm.staff.domain.CrmStaff;
 import com.opensymphony.xwork2.ActionContext;
@@ -18,11 +20,15 @@ public class StaffAction extends ActionSupport implements ModelDriven<CrmStaff> 
 	
 	
 	private StaffService staffService;
+	private DepartmentService departmentService;
 	
 	public void setStaffService(StaffService staffService) {
 		this.staffService = staffService;
 	}
 	
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
 	//////////////////////////////////////////
 	public String login(){
 		//查询员工
@@ -56,6 +62,26 @@ public class StaffAction extends ActionSupport implements ModelDriven<CrmStaff> 
 		
 		return "findAll";
 	}
+	//通过id查找员工
+	
+	public String editUI(){
+			CrmStaff findstaff=this.staffService.findById(staff);
+			ActionContext.getContext().getValueStack().push(findstaff);
+			
+			List<CrmDepartment> allDepartment=departmentService.findall();
+			ActionContext.getContext().getValueStack().set("allDepartment",allDepartment);
+			
+		return "findById";
+	}
+	
+	//员工跟新
+	
+	public String edit(){
+		
+		this.staffService.updateStaff(staff);
+		return "edit";
+	}
+	
 	
 	
 	

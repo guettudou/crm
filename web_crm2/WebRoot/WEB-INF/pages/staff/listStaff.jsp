@@ -89,11 +89,14 @@
 	    <td align="center"><s:property value="staffName"/></td>
 	    <td align="center"><s:property value="gender"/></td>
 	    <td align="center"><s:date name="onDutyDate" format="yyyy-MM-dd"/></td>
-	    <td align="center"></td>
-	    <td align="center">l</td>
+	    <td align="center"><s:property value="post.postName"/></td>
+	    <td align="center"><s:property value="post.department.depName"/></td>
 	  	<td width="7%" align="center">
 	  		
-	  		<a href="${pageContext.request.contextPath}/pages/staff/editStaff.jsp"><img src="${pageContext.request.contextPath}/images/button/modify.gif" class="img" /></a>	
+	  		<s:a action="staffAction_editUI" namespace="/">
+				<s:param name="staffId" value="staffId"></s:param>
+	  			<img src="${pageContext.request.contextPath}/images/button/modify.gif" class="img" />
+	  		</s:a>	
 	  	</td>
 	  	
 	  </tr>
